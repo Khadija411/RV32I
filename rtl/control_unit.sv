@@ -576,6 +576,67 @@ module control_unit (
         end
       endcase
     end
+    default: begin
+      assign reg_write=1'b1;
+      assign branch=1'b0;
+      assign store=1'b0;
+      assign load=1'b0;
+      assign Mem2Reg=1'b1;
+      assign OP_A=2'b00;
+      assign OP_B=1'b0;
+      assign IMM_sel=2'b11;
+      assign N_PC=2'b00;
+      case (fun3) 
+        3'b000:begin 
+          if (!func7)
+            assign ALU_C=4'b0000;
+          else 
+            assign ALU_C=4'b0001;
+        end
+        3'b001: begin
+          if (!func7)
+            assign ALU_C=4'b0101;
+          else 
+            assign ALU_C=4'b1001;
+        end
+        3'b010:begin 
+          if (!func7)
+            assign ALU_C=4'b0111;
+          else 
+            assign ALU_C=4'b0111;
+        end
+        3'b011: begin
+          if (!func7)
+            assign ALU_C=4'b1000;
+          else 
+            assign ALU_C=4'b1000;
+        end
+        3'b100:begin 
+          if (!func7)
+            assign ALU_C=4'b0100;
+          else 
+            assign ALU_C=4'b0101;
+        end
+        3'b101: begin
+          if (!func7)
+            assign ALU_C=4'b0110;
+          else 
+            assign ALU_C=4'b0110;
+        end
+        3'b110:begin 
+          if (!func7)
+            assign ALU_C=4'b0011;
+          else 
+            assign ALU_C=4'b0011;
+        end
+        3'b111: begin
+          if (!func7)
+            assign ALU_C=4'b0010;
+          else 
+            assign ALU_C=4'b0010;
+        end
+      endcase
+    end
     endcase
   end
 endmodule
