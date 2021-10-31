@@ -20,9 +20,9 @@ parameter AddrRegWidth=5
   integer i;
 initial begin
   for (i=0;i<(Registers);i=i+1)begin
-    r[i]<=0;
+    r[i]=0;
   end
-  r[2]<=32'h00000200;
+  r[2]=32'h00000200;
 end
 
   always_ff @(posedge clk)begin

@@ -1,6 +1,6 @@
 // Immediate generation
 module Immediate(
-  input logic [31:0]inst,
+  input logic [31:7]inst,
   input logic [31:0]PC,
   output logic [31:0]I,
   output logic [31:0]S,
@@ -36,9 +36,9 @@ module Immediate(
     Uj[20]=inst[31];
     Uj[0]=1'b0;
     if(inst[31]==1'b1)
-      Uj[31:21]=12'b111111111111;
+      Uj[31:21]=11'b11111111111;
     else
-      Uj[31:21]=12'b000000000000;
+      Uj[31:21]=11'b00000000000;
     Uj=Uj+PC;
 //     U type
     U[19:0]=inst[31:12];

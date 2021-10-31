@@ -6,16 +6,12 @@ module memory#(parameter width=32, parameter addwidth=12)
     input logic [31:0] data_in,
     input logic str,
     input logic ld,
-    output logic [31:0] instruction,
     output logic [31:0] data_out
   );
   
   parameter depth=2**addwidth;
   logic [width-1:0]mem[0:depth-1];
   logic [1:0] byte_masking;
-  //   instruction memory
-  initial $readmemh("inst.mem",mem, depth/2);
-  assign instruction=mem[address];
 //   data memory
   assign byte_masking = address[addwidth-1 : addwidth- 2];
   always @(posedge clk) begin
