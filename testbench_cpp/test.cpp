@@ -13,7 +13,7 @@ int main(int argc, char** argv, char** env){
     VerilatedVcdC* vcd_file=0;
   
      const char *vcd = Verilated::commandArgsPlusMatch("vcd="); //--vdc use then only it will activate
-         if (vcd[0]) {
+         if (1) {
           Verilated::traceEverOn(true);
           vcd_file = new VerilatedVcdC;
           my_top->trace (vcd_file, 99);
