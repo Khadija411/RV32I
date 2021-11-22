@@ -1,0 +1,14 @@
+loop:
+addi x12,x0,0
+addi x10,x0,10
+addi x13,x13,1
+blt x13,x12,natural_no
+natural_no:
+jalr x0,x1,0
+addi x28,x0,2
+addi x29,x0,1
+blt x13,x20,loop
+addi x30,x30,1
+j end
+end:
+exit:

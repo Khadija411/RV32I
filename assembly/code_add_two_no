@@ -1,0 +1,5 @@
+li x1,7         # x1=7
+li x2,3         # x2=3
+add x3,x1,x2    # x3=x1+x2
+sw x3,0x0(zero)
+lw x4,0x0(zero)

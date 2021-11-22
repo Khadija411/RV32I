@@ -1,0 +1,11 @@
+addi x5,x0,100
+odd_no:
+addi x6,x6,1
+beq  x6,x5,end
+andi x7,x6,1
+bne x7,x0,save
+jal odd_no
+save: 
+addi x10,x6,0
+jal odd_no
+end:

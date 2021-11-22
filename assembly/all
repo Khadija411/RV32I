@@ -1,0 +1,30 @@
+addi x4, x0, 5
+loop:
+addi x5, x0, 10
+add x6, x4, x5
+and x7, x6, x4
+andi x8, x4, 5
+auipc x9, 0
+lui x31, 1
+beq x4, x5, loop
+bge x14, x4, end
+bgeu x7, x6, loop
+blt x7, x7, loop
+bltu x7, x7, loop
+bne x7, x7, loop
+xor x9, x4, x5
+xori x14, x0, 5
+#jalr x10, 0x0(x8)
+sw x3,0x0(zero) # store value of x3
+lw x4,0x0(zero) # load value of x3 in x4
+or x12, x4, x7
+ori x13, x4, 5
+#shift
+slt x17, x4, x5
+sll x18, x9, x4
+sra x20, x9, x9
+srl x15, x4, x8
+sub x16, x5, x4
+jal loop
+end:
+jalr x10, 0x0(x8)

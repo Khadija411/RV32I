@@ -1,0 +1,8 @@
+addi x1,x0,4   # a=4
+addi x2,x0,3   # b=3
+bge x1,x2,else
+addi x3,x1,1   # if (a<b): c=a+1
+beq x0,x0,end
+else:
+addi x3,x2,2   # else: c=a+2
+end:

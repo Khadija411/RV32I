@@ -1,0 +1,28 @@
+#multiplication using stack
+addi x31, x0, 5 		# limit
+addi x13, x0, 0  		# counter
+addi sp, sp, -20   		# stacking
+multiply:
+	addi x15, x15, 5    # array 1 TABLE OF 5 
+	addi x16, x16, 2    # array 2 TABLE OF 2 
+    # TILL 5 
+	addi x12, zero, 0   # INITIALIZING counter of inner loop
+	#mul x17, x15, x16  # Against this insruction we will use the following method 
+	addi x17, x0, 0     # clearing the register
+	loop:
+		addi x12, x12, 1    # increment in the counter
+		add x17, x17, x15	# multiplying effect
+	   	bne x12, x16, loop  # checking the condition
+		sw x17, 0x0(sp)		# storing in the STACK
+		addi sp, sp, 4		# next place in stack
+        addi x13,x13,1		# incrementing the counter
+		bge x13, x31, end	# checking the conditions
+		jal multiply		#	LOOP
+		end:
+
+#array1=[1,2,3,4,5];
+#array2=[0,2,4,6,8];
+#for(int i=0, i<=5, i++){
+#mult[i]=array1[i]*array2[i];}
+
+
