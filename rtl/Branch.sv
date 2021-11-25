@@ -37,5 +37,6 @@ module Branch(
   	    default: res=0;
   	  endcase
   	end
+    else assign res=0;
   end
 endmodule  

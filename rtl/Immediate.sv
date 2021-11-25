@@ -13,11 +13,16 @@ module Immediate(
     I[11:0]=inst[31:20];
     if(inst[31]==1'b1)
       I[31:12]=20'b11111111111111111111;
+    else
+      I[31:12]=20'b0; 
 //     S type
     S[4:0]=inst[11:7];
     S[11:5]=inst[31:25];
     if(inst[31]==1'b1)
       S[31:12]=20'b11111111111111111111;
+    else begin
+      S[31:12]=20'b0;
+    end
 //     Sb type
     Sb[11]=inst[7];
     Sb[4:1]=inst[11:8];

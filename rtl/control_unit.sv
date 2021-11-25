@@ -9,7 +9,6 @@ module control_unit (
   output logic [1:0]OP_A,
   output logic OP_B,
   output logic Mem2Reg,
-  output logic load,
   output logic store,
   output logic branch,
   output logic reg_write
@@ -21,7 +20,6 @@ module control_unit (
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b0;
@@ -38,7 +36,7 @@ module control_unit (
           if (!func7)
             assign ALU_C=4'b0101;
           else 
-            assign ALU_C=4'b1001;
+            assign ALU_C=4'b1110;
         end
         3'b010:begin 
           if (!func7)
@@ -56,25 +54,25 @@ module control_unit (
           if (!func7)
             assign ALU_C=4'b0100;
           else 
-            assign ALU_C=4'b0101;
+            assign ALU_C=4'b1110;
         end
         3'b101: begin
           if (!func7)
             assign ALU_C=4'b0110;
           else 
-            assign ALU_C=4'b0110;
+            assign ALU_C=4'b1001;
         end
         3'b110:begin 
           if (!func7)
             assign ALU_C=4'b0011;
           else 
-            assign ALU_C=4'b0011;
+            assign ALU_C=4'b1110;
         end
         3'b111: begin
           if (!func7)
             assign ALU_C=4'b0010;
           else 
-            assign ALU_C=4'b0010;
+            assign ALU_C=4'b1110;
         end
       endcase
     end
@@ -83,435 +81,95 @@ module control_unit (
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b10;
       assign OP_B=1'b1;
       assign IMM_sel=2'b00;
       assign N_PC=2'b11;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-      endcase
+      assign  ALU_C=4'b1111;
     end
     7'b0010011: begin
-//       Load
+//       I-type
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b1;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b1;
       assign IMM_sel=2'b00;
       assign N_PC=2'b00;
       case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0101;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0111;
-          else 
-           assign  ALU_C=4'b0111;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b1000;
-          else 
-           assign  ALU_C=4'b1000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0100;
-          else 
-           assign  ALU_C=4'b0100;
-        end
-        3'b101: begin
+        3'b000: if (!func7) assign ALU_C=4'b0000;
+        3'b001: assign ALU_C=4'b0101;
+        3'b010: assign ALU_C=4'b0111;
+        3'b011: assign ALU_C=4'b1000;
+        3'b100: assign ALU_C=4'b0100;
+        3'b101:  begin
           if (!func7)
             assign ALU_C=4'b0110;
           else 
             assign ALU_C=4'b1001;
         end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0011;
-          else 
-            assign ALU_C=4'b0011;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0010;
-          else 
-            assign ALU_C=4'b0010;
-        end
+        3'b110: assign ALU_C=4'b0011;
+        3'b111: assign ALU_C=4'b0010;
       endcase
     end
     7'b0000011: begin
-//       I-Type
+//       load
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
-      assign Mem2Reg=1'b1;
+      assign Mem2Reg=1'b0;
       assign OP_A=2'b00;
       assign OP_B=1'b1;
       assign IMM_sel=2'b00;
       assign N_PC=2'b00;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0101;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b1000;
-          else 
-           assign  ALU_C=4'b1000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0100;
-          else 
-           assign  ALU_C=4'b0100;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0110;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0010;
-          else 
-            assign ALU_C=4'b0010;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0010;
-          else 
-            assign ALU_C=4'b0010;
-        end
-      endcase
+      assign  ALU_C=4'b0000;
     end
     7'b0100011: begin
 //       S-type
       assign reg_write=1'b0;
       assign branch=1'b0;
       assign store=1'b1;
-      assign load=1'b0;
-      assign Mem2Reg=1'b0;
+      assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b1;
       assign IMM_sel=2'b01;
       assign N_PC=2'b00;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0001;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0001;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0001;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0001;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-      endcase
+      assign  ALU_C=4'b0000;
     end
     7'b1100011: begin
 //       Sb-type
       assign reg_write=1'b0;
       assign branch=1'b1;
       assign store=1'b0;
-      assign load=1'b0;
-      assign Mem2Reg=1'b0;
+      assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b0;
       assign IMM_sel=2'b11;
       assign N_PC=2'b10;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0001;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0101;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0111;
-          else 
-           assign  ALU_C=4'b0111;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b1000;
-          else 
-           assign  ALU_C=4'b1000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0100;
-          else 
-           assign  ALU_C=4'b0101;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0110;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0011;
-          else 
-            assign ALU_C=4'b0011;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0010;
-          else 
-            assign ALU_C=4'b0010;
-        end
-      endcase
     end
-      
     7'b0110111: begin
 //       LUI
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b1;
       assign IMM_sel=2'b10;
       assign N_PC=2'b00;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-      endcase
     end
     7'b0010111: begin 
 //       AUIPC
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b01;
       assign OP_B=1'b1;
       assign IMM_sel=2'b10;
       assign N_PC=2'b00;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b0000;
-          else 
-           assign  ALU_C=4'b0000;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0000;
-        end
-      endcase
     end
     
     7'b1101111: begin
@@ -519,123 +177,23 @@ module control_unit (
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
-      assign Mem2Reg=1'b0;
+      assign Mem2Reg=1'b1;
       assign OP_A=2'b10;
       assign OP_B=1'b0;
       assign IMM_sel=2'b11;
       assign N_PC=2'b01;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b010:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b011: begin
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b100:begin 
-          if (!func7)
-           assign  ALU_C=4'b1111;
-          else 
-           assign  ALU_C=4'b1111;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b1111;
-          else 
-            assign ALU_C=4'b1111;
-        end
-      endcase
+      assign ALU_C=4'b1111;
     end
     default: begin
       assign reg_write=1'b1;
       assign branch=1'b0;
       assign store=1'b0;
-      assign load=1'b0;
       assign Mem2Reg=1'b1;
       assign OP_A=2'b00;
       assign OP_B=1'b0;
       assign IMM_sel=2'b11;
       assign N_PC=2'b00;
-      case (fun3) 
-        3'b000:begin 
-          if (!func7)
-            assign ALU_C=4'b0000;
-          else 
-            assign ALU_C=4'b0001;
-        end
-        3'b001: begin
-          if (!func7)
-            assign ALU_C=4'b0101;
-          else 
-            assign ALU_C=4'b1001;
-        end
-        3'b010:begin 
-          if (!func7)
-            assign ALU_C=4'b0111;
-          else 
-            assign ALU_C=4'b0111;
-        end
-        3'b011: begin
-          if (!func7)
-            assign ALU_C=4'b1000;
-          else 
-            assign ALU_C=4'b1000;
-        end
-        3'b100:begin 
-          if (!func7)
-            assign ALU_C=4'b0100;
-          else 
-            assign ALU_C=4'b0101;
-        end
-        3'b101: begin
-          if (!func7)
-            assign ALU_C=4'b0110;
-          else 
-            assign ALU_C=4'b0110;
-        end
-        3'b110:begin 
-          if (!func7)
-            assign ALU_C=4'b0011;
-          else 
-            assign ALU_C=4'b0011;
-        end
-        3'b111: begin
-          if (!func7)
-            assign ALU_C=4'b0010;
-          else 
-            assign ALU_C=4'b0010;
-        end
-      endcase
+      assign ALU_C=4'b0000;
     end
     endcase
   end

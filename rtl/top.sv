@@ -1,4 +1,5 @@
 `include "rtl/memory.sv"
+`include "rtl/inst_mem.sv"
 `include "rtl/reg_file.sv"
 `include "rtl/Immediate.sv"
 `include "rtl/ALU.sv"
@@ -9,16 +10,14 @@ module top(
   input logic reset,
   output logic [31:0]data
 );
+
 // -----------------------local variables-----------------------
-  parameter depth=2**addwidth;
-  parameter width=32;
-  parameter addwidth=12;
-  logic [width-1:0]mem[0:depth-1];
+  
   logic [31:0]inst;
   logic [31:0]A;
   logic [31:0]B;
   logic [31:0]Result;
-  logic [31:0] PC;
+  logic [31:0] PC=32'b0;
   logic [31:0]I_type;
   logic [31:0]S_type;
   logic [31:0]Sb_type;
@@ -40,15 +39,17 @@ module top(
   logic [31:0]b2;
   logic [31:0]data_out;
   logic str;
-  logic ld;
 // ----------------------calling the modules-------------------- 
   memory data_mem(
     .address(Result[13:2]),
     .clk(clk),
     .data_in(b1),
     .str(str),
-    .ld(ld),
     .data_out(data_out)
+  );
+  inst_mem instructions(
+    .inst(inst),
+    .address(PC[13:2])
   );
   reg_file cache(
     .rs1(inst[19:15]),
@@ -93,60 +94,34 @@ module top(
     .OP_A(A_sel),
     .OP_B(B_sel),
     .Mem2Reg(mem2reg),
-    .load(ld),
     .store(str),
     .branch(branch_en),
     .reg_write(reg_write)
   );
 // -----------------------datapath-------------------------------
-  always @(posedge clk ) begin
     // fetch___________________________________________________
-
-    //   instruction memory
-    $readmemh("/home/khadija/Documents/RV32I/inst.mem",mem);
-    inst<=mem[PC[13:2]];
     
-    case(PC_sel)
-      2'b00: PC<=PC+4;
-      2'b01: PC<=Uj_type;
-      2'b10: PC<=branch_PC;
-      2'b11: PC<=JALR;
-      default: PC<=PC+4;
-    endcase
-    // decode__________________________________________________
-    case (imm_sel)
-      2'b00: b2<=I_type;
-      2'b01: b2<=S_type;
-      2'b10: b2<=U_type;
-      default: b2<=I_type;
-    endcase
-    case (B_sel)
-      1'b0: B<=b1;
-      1'b1: B<=b2;
-      default: B<=b1;
-    endcase
-    case (A_sel)
-      2'b00: A<=a1;
-      2'b01: A<=PC;
-      2'b10: A<=PC+4;
-      2'b11: A<=32'b0;
-      default: A<=a1;
-    endcase
+  always @(posedge clk ) begin
+    if (reset==0) begin
+      PC <= (PC_sel == 2'b00) ? PC+4 :
+          ((PC_sel == 2'b01) ? Uj_type :
+          ((PC_sel == 2'b10) ? branch_PC :
+          ((PC_sel == 2'b11) ? JALR : PC+4)));
+    end
+  end
+// decode__________________________________________________
+  assign b2 = (imm_sel==2'b00) ? I_type:
+              (imm_sel==2'b01) ? S_type:
+              (imm_sel==2'b10) ? U_type:I_type;
+  assign B = (B_sel==1'b0) ? b1 : b2;
+  assign A = (A_sel==2'b00)? a1 :
+             (A_sel==2'b01)? PC :
+             (A_sel==2'b10)? PC+4 : 32'b0;
     // execute________________________________________________
 // JALR 
-
-    JALR<=a1+I_type;
-    case (br)
-      1'b0: branch_PC<=PC+4;
-      1'b1: branch_PC<=Sb_type;
-      default: branch_PC<=PC+4;
-    endcase
-
+  assign JALR=a1+I_type;
+  assign branch_PC = (br==1'b0)?PC+4:Sb_type;
     // write back_______________________________________________
-     case (mem2reg)
-       1'b0: data<=data_out;
-       1'b1: data<=Result;
-       default: data<=data_out;
-     endcase
-  end
+  assign data = (mem2reg==1'b0)?data_out:Result; 
+
 endmodule
