@@ -36,10 +36,23 @@ int main(int argc, char** argv, char** env) {
         if (vcd_file && !dump && (main_time > vcd_start)) {
             dump = true;
         }
-        data_mem->address=2050;
-        data_mem->ld=1;
-        data_mem->str=0;
-        data_mem->data_in=10;//example number
+
+        if (main_time > 15){
+            data_mem->address=2050;
+            data_mem->ld=1;
+            data_mem->str=0;
+            data_mem->data_in=10;
+        }
+
+        if (main_time > 20){
+            data_mem->address=2050;
+            data_mem->ld=1;
+            data_mem->str=0;
+            data_mem->data_in=10;
+        }
+
+
+
         data_mem->eval();
 
         if (dump) {

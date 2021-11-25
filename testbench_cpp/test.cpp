@@ -34,15 +34,15 @@ vluint64_t vcd_start = 0;
 
     bool dump = false;
     my_top->clk = 0;
-    my_top->reset = 0; // Set some inputs
+    my_top->reset = 1; // Set some inputs
     while (!Verilated::gotFinish()) {
 
         if (vcd_file && !dump && (main_time > vcd_start)) {
             dump = true;
           }
 
-        if (main_time > 10) {
-            my_top->reset = 1;
+        if (main_time > 15) {
+            my_top->reset = 0;
         }
         
         my_top->eval();
