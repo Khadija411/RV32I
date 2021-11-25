@@ -1,0 +1,11 @@
+addi x5,x0,5
+sll x6,x5,x5
+slli x7,x5,2
+slt x8,x5,x7
+slti x9,x5,200
+sltu x10,x5,x6
+sltiu x11,x5,-600
+sra x12,x5,x11
+srai x13,x5,2  
+srl x14,x5,x6  
+srli x15,x5,1
