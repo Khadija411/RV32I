@@ -45,10 +45,15 @@ module top(
     .clk(clk),
     .data_in(b1),
     .str(str),
+    .byte_masking(Result[31:30]),
     .data_out(data_out)
   );
   inst_mem instructions(
-    .inst(inst),
+    .data_out(inst),
+    .clk(clk),
+    .data_in(b1),
+    .str(str),
+    .byte_masking(Result[31:30]),
     .address(PC[13:2])
   );
   reg_file cache(

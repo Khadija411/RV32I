@@ -5,14 +5,15 @@ module memory#(parameter width=32, parameter addwidth=12)
     input logic clk,
     input logic [31:0] data_in,
     input logic str,
+    input logic [1:0] byte_masking,
     output logic [31:0] data_out
   );
   
   parameter depth=2**addwidth;
   logic [width-1:0]mem[0:depth-1];
-  logic [1:0] byte_masking;
+  
 //   data memory
-  assign byte_masking = address[addwidth-1 : addwidth- 2];
+  // assign byte_masking = address[addwidth-1 : addwidth- 2];
 //   load
   assign data_out=mem[address];
   always @(posedge clk) begin 
